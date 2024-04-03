@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Todo: Choose a primary color   */
+/* light purple 	hsl(297, 60%, 57%) */
+/* dark purple 	hsl(283, 34%, 46%) */
+
 .spinner {
   border-radius: 50%;
   background:
