@@ -36,7 +36,7 @@ const testimonials = [
   },
 ];
 
-export default function HowItWorks() {
+export default function Testimonials() {
   return (
     <Container className="flex justify-center items-center flex-col">
       <H2 title="Testimonials" />

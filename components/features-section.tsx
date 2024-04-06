@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { useRef } from "react";
 import Container from "./container";
 import {
   GlowingStarsBackgroundCard,
@@ -13,9 +13,11 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import H2 from "./ui/typography/h2";
-import { AnimatePresence, motion } from "framer-motion";
+import { useInView, motion } from "framer-motion";
 
 export default function FeaturesSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
   const Features = [
     {
       name: "Episode Explorer",
@@ -47,8 +49,9 @@ export default function FeaturesSection() {
     <Container className="flex justify-center items-center flex-col">
       <H2 title="The Podcast Platform that Solves Your Problems" />
       <motion.p
+        ref={ref}
         initial={{ opacity: 0, y: 100 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={isInView && { opacity: 1, y: 0 }}
         transition={{
           delay: 0.4,
           duration: 0.8,
@@ -63,10 +66,10 @@ export default function FeaturesSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center w-full">
         {Features.map((feature, index) => (
           <motion.div
+            ref={ref}
             key={feature.name}
             initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
+            animate={isInView && { opacity: 1, y: 0 }}
             transition={{
               duration: 0.8,
               ease: "easeInOut",
