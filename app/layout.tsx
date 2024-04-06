@@ -3,6 +3,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const clashDisplay = localFont({ src: "../fonts/ClashDisplay-Variable.woff2" });
 const satoshi = localFont({
@@ -54,6 +55,7 @@ export default function RootLayout({
       >
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
