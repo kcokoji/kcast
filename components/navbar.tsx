@@ -32,7 +32,7 @@ export default function Navbar() {
               height={40}
               quality={100}
             />
-            <h1 className="bg-gradient-to-br from-white to-gray-300 bg-clip-text text-xl font-semibold leading-tight text-transparent sm:text-2xl sm:leading-tight md:leading-tight">
+            <h1 className="bg-gradient-to-br from-white to-gray-300 bg-clip-text text-xl font-bold leading-tight text-transparent sm:text-2xl sm:leading-tight md:leading-tight">
               Kcast
             </h1>
           </Link>
