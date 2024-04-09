@@ -8,17 +8,9 @@ interface Props {
   title: string;
   description?: string;
   children: React.ReactNode;
-  socialButton?: boolean;
-  loading?: boolean | undefined;
 }
 
-export default function FormWrapper({
-  title,
-  description,
-  children,
-  socialButton,
-  loading,
-}: Props) {
+export default function FormWrapper({ title, description, children }: Props) {
   return (
     <div className="mx-auto w-full max-w-sm lg:w-96">
       <div className="mb-6 flex items-center justify-center flex-col gap-2">
@@ -40,28 +32,7 @@ export default function FormWrapper({
           <h2 className="text-muted-foreground">{description}</h2>
         )}
       </div>
-      <div className="mb-8">
-        {socialButton && (
-          <div>
-            <div className="">
-              <GoogleButton loading={loading} />
-            </div>
-
-            <div className="relative mt-6">
-              <div
-                className="absolute inset-0 flex items-center"
-                aria-hidden="true"
-              >
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500">or</span>
-              </div>
-            </div>
-          </div>
-        )}
-        {children}
-      </div>
+      <div className="mb-8">{children}</div>
     </div>
   );
 }

@@ -55,7 +55,7 @@ export const HeroSection = () => {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="my-6 max-w-xl text-center lg:text-start text-base leading-relaxed tracking-wide md:text-lg md:leading-relaxed"
+          className="my-6 max-w-xl text-center lg:text-start text-base leading-relaxed  md:text-xl md:leading-relaxed"
         >
           Unleash your voice. Inspire your audience
           <br /> Share your story.

@@ -103,13 +103,16 @@ export default function ResetPasswordForm() {
             </form>
           </Form>
           <div className="flex justify-center items-center">
-            <Button asChild variant="link" className="text-black">
-              <Link
-                className={isPending ? "pointer-events-none" : ""}
-                href="/login"
-              >
-                Back to login
-              </Link>
+            <Button
+              asChild
+              variant="link"
+              className={
+                isPending
+                  ? "pointer-events-none cursor-not-allowed text-muted-foreground p-0"
+                  : "p-0"
+              }
+            >
+              <Link href="/login">Back to login</Link>
             </Button>
           </div>
         </div>

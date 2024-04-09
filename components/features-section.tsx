@@ -57,7 +57,7 @@ export default function FeaturesSection() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="my-6 max-w-2xl text-center text-sm leading-relaxed tracking-wide md:text-lg md:leading-relaxed text-gray-300"
+        className="my-6 max-w-2xl text-center text-sm leading-relaxed md:text-xl md:leading-relaxed text-gray-300"
       >
         Designed with content creators like you in mind, we offer a suite of
         features that make podcasting effortless and enjoyable.

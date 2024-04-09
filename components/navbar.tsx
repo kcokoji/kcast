@@ -18,11 +18,6 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
   };
 
   return (
@@ -42,7 +37,7 @@ export default function Navbar() {
             </h1>
           </Link>
           <div className="lg:flex items-center gap-2 hidden">
-            <Button variant="secondary" asChild>
+            <Button variant="secondary" asChild size="lg">
               <Link className="flex items-center gap-1.5" href="/login">
                 Login
                 <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
@@ -75,7 +70,7 @@ export default function Navbar() {
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
-                className="fixed top-[60px] w-full h-full z-10 bg-gray-950 overflow-hidden left-0"
+                className="fixed top-[60px] w-full h-full z-1 bg-gray-950 overflow-hidden left-0"
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 100 }}

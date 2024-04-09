@@ -24,6 +24,7 @@ import { useSearchParams } from "next/navigation";
 import { signIn } from "@/actions/auth";
 import { FormError } from "./form-error";
 import { Loader } from "lucide-react";
+import GoogleButton from "./google-button";
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -57,9 +58,22 @@ export default function LoginForm() {
   };
 
   return (
-    <FormWrapper loading={isPending} title=" Welcome Back 👋" socialButton>
+    <FormWrapper title=" Welcome Back 👋">
+      <FormError message={error} />
+      <div className="mt-2">
+        <GoogleButton loading={isPending} />
+      </div>
+
+      <div className="relative mt-6">
+        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+          <div className="w-full border-t border-gray-300"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white px-2 text-gray-500">or</span>
+        </div>
+      </div>
+
       <div className="mt-6 space-y-2">
-        <FormError message={error} />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -111,13 +125,16 @@ export default function LoginForm() {
               )}
             />
             <div className="flex justify-end">
-              <Button variant="link" className="p-0">
-                <Link
-                  className={isPending ? "pointer-events-none" : ""}
-                  href="/reset-password"
-                >
-                  Forgot Password?
-                </Link>
+              <Button
+                asChild
+                variant="link"
+                className={
+                  isPending
+                    ? "pointer-events-none cursor-not-allowed text-muted-foreground p-0"
+                    : "p-0"
+                }
+              >
+                <Link href="/reset-password">Forgot Password?</Link>
               </Button>
             </div>
             <div>
@@ -137,13 +154,16 @@ export default function LoginForm() {
         </Form>
         <div className="flex justify-center items-center">
           Don&apos;t have an account?
-          <Button asChild variant="link">
-            <Link
-              href="/register"
-              className={isPending ? "pointer-events-none" : ""}
-            >
-              Sign up for free
-            </Link>
+          <Button
+            asChild
+            variant="link"
+            className={
+              isPending
+                ? "pointer-events-none cursor-not-allowed text-muted-foreground"
+                : ""
+            }
+          >
+            <Link href="/register">Sign up for free</Link>
           </Button>
         </div>
       </div>

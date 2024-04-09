@@ -19,7 +19,7 @@ export default function Error({
   return (
     <div className="h-screen flex flex-col">
       <div className="py-8 space-y-4 h-screen flex items-center flex-col">
-        <h1 className="text-2xl">505</h1>
+        <h1 className="text-2xl lg:text-4xl font-bold">500</h1>
         <p className="text-xl text-gray-400">Something went wrong</p>
         <div className="flex justify-center items-center gap-2">
           <Button

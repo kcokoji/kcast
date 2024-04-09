@@ -23,6 +23,7 @@ import FormWrapper from "./form-wrapper";
 import { register } from "@/actions/auth";
 import { FormError } from "./form-error";
 import { Loader } from "lucide-react";
+import GoogleButton from "./google-button";
 
 export default function RegisterForm() {
   const [isPending, startTransition] = useTransition();
@@ -54,9 +55,21 @@ export default function RegisterForm() {
   };
 
   return (
-    <FormWrapper loading={isPending} title="Create an account" socialButton>
+    <FormWrapper title="Create an account">
+      <FormError message={error} />
+      <div className="mt-2">
+        <GoogleButton loading={isPending} />
+      </div>
+
+      <div className="relative mt-6">
+        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+          <div className="w-full border-t border-gray-300"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white px-2 text-gray-500">or</span>
+        </div>
+      </div>
       <div className="mt-6 space-y-2">
-        <FormError message={error} />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -144,13 +157,16 @@ export default function RegisterForm() {
         </Form>
         <div className="flex justify-center items-center">
           Already have an account?
-          <Button asChild variant="link">
-            <Link
-              className={isPending ? "pointer-events-none" : ""}
-              href="/login"
-            >
-              Login
-            </Link>
+          <Button
+            asChild
+            variant="link"
+            className={
+              isPending
+                ? "pointer-events-none cursor-not-allowed text-muted-foreground"
+                : ""
+            }
+          >
+            <Link href="/login">Login</Link>
           </Button>
         </div>
       </div>
