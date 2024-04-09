@@ -11,9 +11,10 @@ import {
 import * as z from "zod";
 
 import { createClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
 
-const origin = headers().get("origin");
+import { getURL } from "@/utils/supabase/url";
+
+const url = getURL();
 
 export async function signIn(
   values: z.infer<typeof LoginSchema>,
@@ -69,7 +70,9 @@ export async function reset(values: z.infer<typeof ResetPasswordSchema>) {
 
     const { email } = validatedFields.data;
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {});
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${url}/api/auth/reset-password`,
+    });
 
     if (error) {
       return { error: error.message };
@@ -148,6 +151,7 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
     email,
     password,
     options: {
+      emailRedirectTo: `${url}/api/auth/verification`,
       data: {
         name,
       },
@@ -177,7 +181,7 @@ export const google = async () => {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/api/auth/callback`,
+      redirectTo: `${url}api/auth/callback`,
       queryParams: {
         access_type: "offline",
         prompt: "consent",
