@@ -14,6 +14,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import H1 from "./ui/typography/h1";
 import { useRef } from "react";
+import Link from "next/link";
 
 const COLORS_TOP = ["#874d9d"];
 
@@ -71,9 +72,12 @@ export const HeroSection = () => {
           <Button
             size="lg"
             className="group transition-all hover:scale-105 duration-300 ease-in-out"
+            asChild
           >
-            Get started for free
-            <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
+            <Link className="flex items-center gap-1.5" href="/register">
+              Get started for free
+              <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
+            </Link>
           </Button>
         </motion.div>
       </div>

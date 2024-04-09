@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Simple Transactional Email</title>
+    <body style="font-family: Helvetica, sans-serif; -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.3; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; background-color: #f4f5f6; margin: 0; padding: 0;">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
+          <tr>
+            <td class="container" style="padding: 24px;">
+              <div class="content" style="max-width: 600px; margin: 0 auto;">
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">Email Confirmation</span>
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="main" style="background: #ffffff; border: 1px solid #eaebed; border-radius: 16px; width: 100%;">
+                  <!-- START MAIN CONTENT AREA -->
+                  <tr>
+                    <td class="wrapper" style="padding: 24px;">
+                      <p class="header" style="font-size: 24px; font-family: Helvetica, sans-serif; margin-bottom: 16px;">Reset your password</p>
+                      <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">After the click the button below you'll be prompted to complete the following steps</p>
+                      <ul>
+                        <li>Enter your new password</li>
+                        <li>Confirm your new password</li>
+                        <li>Hit "Change password"</li>
+                      </ul>
+                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="min-width: 100% !important; width: 100%; text-align: left;">
+                        <tbody>
+                          <tr>
+                            <td align="left" style="padding-bottom: 16px;">
+                              <a href="{{ .ConfirmationURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=signup" target="_blank" style="background-color: #874d9d; border: solid 2px #874d9d; border-radius: 4px; box-sizing: border-box; color: #ffffff; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; text-transform: capitalize;">Reset your password</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">If you didn't make this request please ignore</p>
+                    </td>
+                  </tr>
+                  <!-- END MAIN CONTENT AREA -->
+                </table>
+                <!-- START FOOTER -->
+                <div class="footer" style="padding-top: 24px; text-align: center;">
+                  <span class="apple-link" style="color: #9a9ea6; font-size: 16px;">Company Inc, 7-11 Commercial Ct, Belfast BT1 2NB</span>
+                  <br>
+                  <span class="powered-by" style="color: #9a9ea6; font-size: 16px;">Powered by <a href="http://kcast.vercel.app" style="text-decoration: none; color: #9a9ea6;">Kcast</a></span>
+                </div>
+                <!-- END FOOTER -->
+                <!-- END CENTERED WHITE CONTAINER -->
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </body>
+</html>

@@ -42,7 +42,7 @@ export default function Navbar() {
             </h1>
           </Link>
           <div className="lg:flex items-center gap-2 hidden">
-            <Button variant="secondary">
+            <Button variant="secondary" asChild>
               <Link className="flex items-center gap-1.5" href="/login">
                 Login
                 <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
@@ -51,6 +51,7 @@ export default function Navbar() {
             <Button
               size="lg"
               className="group transition-all hover:scale-105 duration-300 ease-in-out"
+              asChild
             >
               <Link className="flex items-center gap-1.5" href="/register">
                 Sign up
@@ -85,6 +86,7 @@ export default function Navbar() {
                     asChild
                     variant="secondary"
                     className="w-full py-8 text-lg"
+                    onClick={toggleMobileMenu}
                   >
                     <Link className="flex items-center gap-1.5" href="/login">
                       Login
@@ -94,6 +96,8 @@ export default function Navbar() {
                   <Button
                     size="lg"
                     className="group transition-all hover:scale-105 duration-300 ease-in-out w-full py-8 text-lg"
+                    asChild
+                    onClick={toggleMobileMenu}
                   >
                     <Link
                       className="flex items-center gap-1.5"

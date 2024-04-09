@@ -18,7 +18,7 @@ export default function H1({ title }: Props) {
         duration: 0.8,
         ease: "easeInOut",
       }}
-      className="max-w-3xl text-center lg:text-start bg-gradient-to-br from-white to-gray-400 bg-clip-text text-4xl font-medium leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
+      className="max-w-3xl text-center lg:text-start bg-gradient-to-br from-white to-gray-400 bg-clip-text text-4xl font-semibold leading-tight text-transparent sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
     >
       {title}
     </motion.h1>

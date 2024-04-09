@@ -63,10 +63,12 @@ export default function FeaturesSection() {
         features that make podcasting effortless and enjoyable.
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center w-full">
+      <div
+        ref={ref}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 place-items-center w-full"
+      >
         {Features.map((feature, index) => (
           <motion.div
-            ref={ref}
             key={feature.name}
             initial={{ opacity: 0, y: 100 }}
             animate={isInView && { opacity: 1, y: 0 }}

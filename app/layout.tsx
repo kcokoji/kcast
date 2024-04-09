@@ -4,7 +4,10 @@ import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "sonner";
+import { Outfit } from "next/font/google";
 
+const urbanist = Outfit({ subsets: ["latin"] });
 const clashDisplay = localFont({ src: "../fonts/ClashDisplay-Variable.woff2" });
 const satoshi = localFont({
   src: "../fonts/Satoshi-Variable.woff2",
@@ -37,7 +40,7 @@ export const metadata: Metadata = {
       " Your free podcast hosting destination. Unlimited hosting, easy-to-use interface, seamless distribution, and advanced analytics. Join our vibrant community and start podcasting today!",
     images: [
       {
-        url: "https://kcast.vercel.app/img/logo.svg",
+        url: "https://kcast.vercel.app/img/sound-waves.png",
       },
     ],
   },
@@ -51,8 +54,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${clashDisplay.className} antialiased ${satoshi.variable} ${GeistSans.variable}`}
+        className={` antialiased ${satoshi.variable} ${GeistSans.className}`}
       >
+        <Toaster richColors position="top-right" />
         {children}
         <SpeedInsights />
         <Analytics />

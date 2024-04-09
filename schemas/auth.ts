@@ -25,6 +25,11 @@ export const ResetPasswordSchema = z.object({
     message: "Email is required",
   }),
 });
+export const ResendSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+});
 
 export const NewPasswordSchema = z
   .object({
@@ -37,4 +42,5 @@ export const NewPasswordSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match!",
+    path: ["confirmPassword"],
   });
