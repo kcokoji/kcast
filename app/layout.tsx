@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free podcast hosting | Kcast",
     description:
-      " Your free podcast hosting destination. Unlimited hosting, easy-to-use interface, seamless distribution, and advanced analytics. Join our vibrant community and start podcasting today!",
+      " Your free podcast hosting destination. Unlimited hosting, easy-to-use interface",
     images: [
       {
         url: "https://kcast.vercel.app/img/sound-waves.png",
