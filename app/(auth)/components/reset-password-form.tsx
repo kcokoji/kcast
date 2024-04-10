@@ -59,7 +59,6 @@ export default function ResetPasswordForm() {
   return (
     <div>
       <FormWrapper
-        loading={isPending}
         title="Forgot Your Password?"
         description=" No worries we would send reset instructions."
       >
