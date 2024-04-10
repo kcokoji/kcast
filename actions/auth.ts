@@ -194,3 +194,19 @@ export const google = async () => {
   }
   redirect(data.url);
 };
+export const verify = async (email: string | null) => {
+  if (!email) {
+    return { error: "Email is required" };
+  }
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.resend({
+    type: "signup",
+    email: email!,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+  return { success: "Email sent" };
+};
