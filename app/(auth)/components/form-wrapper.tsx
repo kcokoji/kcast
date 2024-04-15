@@ -14,13 +14,13 @@ export default function FormWrapper({ title, description, children }: Props) {
   return (
     <div className="mx-auto w-full max-w-sm lg:w-96">
       <div className="mb-6 flex items-center justify-center flex-col gap-2">
-        <Button size="icon" variant="ghost" asChild>
+        <Button size="icon" variant="ghost" className=" mb-4 h-fit" asChild>
           <Link href="/" className="select-none gap-1 w-fit">
             <Image
               src={SoundWaves}
               alt="Kcast logo"
-              width={40}
-              height={40}
+              width={60}
+              height={60}
               quality={100}
             />
           </Link>

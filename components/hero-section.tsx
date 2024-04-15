@@ -15,23 +15,17 @@ import { Button } from "./ui/button";
 import H1 from "./ui/typography/h1";
 import { useRef } from "react";
 import Link from "next/link";
-
-const COLORS_TOP = ["#874d9d"];
+import P from "./ui/typography/p";
 
 export const HeroSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
-  const color = useMotionValue(COLORS_TOP[0]);
-
-  const border = useMotionTemplate`1px solid ${color}`;
-  const boxShadow = useMotionTemplate`0px 2px 18px ${color}`;
-
   return (
-    <Container className="relative py-32 grid grid-cols-1 lg:grid-cols-2 bg-gray-950 px-4 text-gray-200 gap-6">
+    <Container className="relative py-[7rem] grid grid-cols-1 lg:grid-cols-2 bg-gray-950 px-4 text-gray-200 gap-4">
       <div
         ref={ref}
-        className="relative  flex flex-col lg:items-start items-center justify-center gap-2"
+        className="relative  flex flex-col lg:items-start items-center gap-6 py-10"
       >
         <motion.div
           initial={{ opacity: 0 }}
@@ -46,21 +40,17 @@ export const HeroSection = () => {
             Beta Launch Now Live! 🚀
           </Badge>
         </motion.div>
-        <H1 title=" Start your podcasting journey with us" />
-        <motion.p
-          initial={{ opacity: 0, y: 100 }}
-          animate={isInView && { opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.4,
-            duration: 0.8,
-            ease: "easeInOut",
-          }}
-          className="my-6 max-w-xl text-center lg:text-start text-base leading-relaxed  md:text-xl md:leading-relaxed"
-        >
-          Unleash your voice. Inspire your audience
-          <br /> Share your story.
-        </motion.p>
+        <H1
+          isInView={isInView}
+          title=" Start your podcasting journey with us"
+        />
+        <P
+          title="Amplify your message . Your stories, your platform Let's turn your ideas into impactful conversations."
+          isInView={isInView}
+          className="lg:text-start"
+        />
         <motion.div
+          className="mt-6"
           initial={{ opacity: 0, y: 100 }}
           animate={isInView && { opacity: 1, y: 0 }}
           transition={{
@@ -90,19 +80,19 @@ export const HeroSection = () => {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className=" rounded-md overflow-hidden bg-muted-foreground/80 select-none"
+        className="flex justify-center items-center"
       >
-        <AspectRatio ratio={1 / 1}>
-          <Image
-            src={heroImage}
-            alt="Hero Image"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover"
-            quality={100}
-            priority
-          />
-        </AspectRatio>
+        {/* <AspectRatio ratio={1 / 1}> */}
+        <Image
+          src={heroImage}
+          alt="Hero Image"
+          width={700}
+          height={700}
+          className="rounded-md bg-muted-foreground/80 select-none"
+          quality={100}
+          priority
+        />
+        {/* </AspectRatio> */}
       </motion.div>
     </Container>
   );

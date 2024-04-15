@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import H2 from "./ui/typography/h2";
 import { useInView, motion } from "framer-motion";
+import P from "./ui/typography/p";
 
 export default function FeaturesSection() {
   const ref = useRef(null);
@@ -46,22 +47,16 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <Container className="flex justify-center items-center flex-col">
-      <H2 title="The Podcast Platform that Solves Your Problems" />
-      <motion.p
-        ref={ref}
-        initial={{ opacity: 0, y: 100 }}
-        animate={isInView && { opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.4,
-          duration: 0.8,
-          ease: "easeInOut",
-        }}
-        className="my-6 max-w-2xl text-center text-sm leading-relaxed md:text-xl md:leading-relaxed text-gray-300"
-      >
-        Designed with content creators like you in mind, we offer a suite of
-        features that make podcasting effortless and enjoyable.
-      </motion.p>
+    <Container className="flex justify-center items-center flex-col gap-6">
+      <H2
+        isInView={isInView}
+        title="The Podcast Platform that Solves Your Problems"
+      />
+      <P
+        title="Designed with content creators like you in mind, we offer a suite of
+        features that make podcasting effortless and enjoyable."
+        isInView={isInView}
+      />
 
       <div
         ref={ref}

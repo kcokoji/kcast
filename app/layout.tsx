@@ -5,14 +5,12 @@ import { GeistSans } from "geist/font/sans";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
-import { Outfit } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const urbanist = Outfit({ subsets: ["latin"] });
-const clashDisplay = localFont({ src: "../fonts/ClashDisplay-Variable.woff2" });
-const satoshi = localFont({
-  src: "../fonts/Satoshi-Variable.woff2",
+const clashDisplay = localFont({
+  src: "../fonts/ClashDisplay-Variable.woff2",
   display: "swap",
-  variable: "--font-satoshi",
+  variable: "--font-clash",
 });
 
 export const metadata: Metadata = {
@@ -54,12 +52,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` antialiased ${satoshi.variable} ${GeistSans.className}`}
+        className={` antialiased ${clashDisplay.variable} ${GeistSans.className}`}
       >
+        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
         <Toaster richColors position="top-right" />
         {children}
         <SpeedInsights />
         <Analytics />
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

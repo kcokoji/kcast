@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import { useRef } from "react";
 import Container from "./container";
 import H2 from "./ui/typography/h2";
 import { InfiniteMovingCards } from "./ui/testimonial-cards";
+import { useInView } from "framer-motion";
 
 const testimonials = [
   {
@@ -37,17 +38,21 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
   return (
-    <Container className="flex justify-center items-center flex-col">
-      <H2 title="Testimonials" />
+    <div ref={ref}>
+      <Container className="flex justify-center items-center flex-col">
+        <H2 isInView={isInView} title="Testimonials" />
 
-      <div className=" py-10 rounded-md flex flex-col antialiased bg-gray-950 dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-        <InfiniteMovingCards
-          items={testimonials}
-          direction="right"
-          speed="slow"
-        />
-      </div>
-    </Container>
+        <div className=" py-10 rounded-md flex flex-col antialiased bg-gray-950 dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+          <InfiniteMovingCards
+            items={testimonials}
+            direction="right"
+            speed="slow"
+          />
+        </div>
+      </Container>
+    </div>
   );
 }
