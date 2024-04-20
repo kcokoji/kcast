@@ -22,7 +22,6 @@ export default function Error({
       <p className="text-xl text-gray-400">Something went wrong</p>
       <div className="flex justify-center items-center gap-2">
         <Button
-          size="lg"
           onClick={
             // Attempt to recover by trying to re-render the segment
             () => reset()
@@ -30,7 +29,7 @@ export default function Error({
         >
           Try again
         </Button>
-        <Button asChild variant="secondary" size="lg">
+        <Button asChild variant="secondary">
           <Link href="/">Go back home</Link>
         </Button>
       </div>

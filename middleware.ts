@@ -10,6 +10,7 @@ import {
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
+
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
 

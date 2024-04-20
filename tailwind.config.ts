@@ -19,8 +19,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        satoshi: ["var(--font-satoshi)"],
-        geist: ["var(--font-geist-sans)"],
+        clash: ["var(--font-clash)"],
       },
       colors: {
         border: "hsl(var(--border))",

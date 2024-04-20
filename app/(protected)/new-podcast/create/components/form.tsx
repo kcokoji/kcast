@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,53 +16,66 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Spinner from "@/components/ui/loader";
-import { NewPodcastSchema } from "@/schemas/podcast";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-import { useSearchParams } from "next/navigation";
-import { signIn } from "@/actions/auth";
+import { NewPodcastSchema } from "@/schemas/podcast";
+
 import { FormError } from "@/app/(auth)/components/form-error";
 import { Loader } from "lucide-react";
 import { Editor } from "./text-editor";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { LanguageOptions, categories } from "@/lib/utils";
+
+import { FileUploader } from "@/app/(protected)/components/file-uploader";
+
+import { Checkbox } from "@/components/ui/checkbox";
+import MultiSelectFormField from "@/app/(protected)/components/multi-select";
+import { createPodcast } from "@/actions/podcast";
+import { toast } from "sonner";
 
 export default function NewPodcastForm() {
-  const searchParams = useSearchParams();
-  const calLbackUrl = searchParams.get("callbackUrl");
-
   const [isPending, startTransition] = useTransition();
 
   const [error, setError] = useState<string | undefined>("");
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const form = useForm<z.infer<typeof NewPodcastSchema>>({
     resolver: zodResolver(NewPodcastSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      imageUrl: "",
-      language: "",
-      website: "",
-      author: "",
-      category: [],
-      country: "",
-      copyright: "",
+      // title: "",
+      // description: "",
+      file: undefined,
+      // language: undefined,
+      // author: "",
+      // copyright: "",
+      // explicit: false,
+      // website: "",
+      // category: [],
     },
   });
 
-  const onSubmit = (values: z.infer<typeof NewPodcastSchema>) => {
-    // startTransition(() => {
-    //   signIn(values, calLbackUrl)
+  const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
+    const file = values.file[0];
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer);
+    console.log(buffer);
+
+    // startTransition(async () => {
+    //   createPodcast(values)
     //     .then((data) => {
     //       if (data?.error) {
     //         form.reset();
     //         setError(data.error);
+    //       } else {
+    //         toast.success("Podcast created");
     //       }
     //     })
     //     .catch(() => setError("Oops! Something went wrong!"));
     // });
-    console.log(values);
   };
 
   return (
@@ -71,7 +83,7 @@ export default function NewPodcastForm() {
       <FormError message={error} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
+          {/* <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
@@ -82,7 +94,6 @@ export default function NewPodcastForm() {
                     {...field}
                     disabled={isPending}
                     className="bg-white"
-                    placeholder="Enter Email"
                     type="text"
                   />
                 </FormControl>
@@ -93,17 +104,18 @@ export default function NewPodcastForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <div className="bg-white">
-                    <Editor {...field} />
-                  </div>
-                </FormControl>
+                <div className="min-h-40 bg-white rounded-md">
+                  <FormControl>
+                    <Editor {...field} disabled={isPending} />
+                  </FormControl>
+                </div>
                 <FormDescription className="text-end">
                   3000 Maximum Characters (including Html Tags)
                 </FormDescription>
@@ -112,12 +124,168 @@ export default function NewPodcastForm() {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="language"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Language</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isPending}
+                >
+                  <FormControl>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="Choose a language " />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {LanguageOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="author"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Author</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    className="bg-white"
+                    type="text"
+                  />
+                </FormControl>
+                <FormDescription className="text-end">
+                  The creator of the podcast
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="copyright"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Copyright Notice</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    className="bg-white"
+                    type="text"
+                  />
+                </FormControl>
+                <FormDescription className="text-end">
+                  e.g Jane 2022
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <MultiSelectFormField
+                    options={categories}
+                    defaultValue={field.value}
+                    onValueChange={field.onChange}
+                    placeholder="Select options"
+                    variant="inverted"
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormDescription className="text-end">
+                  Choose categories related to your podcast
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="website"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Website</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    className="bg-white"
+                    type="text"
+                  />
+                </FormControl>
+                <FormDescription className="text-end">
+                  (This is optional )
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+
+          <FormField
+            control={form.control}
+            name="file"
+            render={({ field }) => (
+              <div className="space-y-6">
+                <FormItem className="w-full">
+                  <FormLabel>Cover Art</FormLabel>
+                  <FormControl>
+                    <FileUploader
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      maxFiles={1}
+                      maxSize={3 * 1024 * 1024}
+                      disabled={isPending}
+                      // progresses={progresses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+            )}
+          />
+          {/* <FormField
+            control={form.control}
+            name="explicit"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0  p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormDescription className="text-base lg:text-lg text-black">
+                  This podcast includes explicit content
+                </FormDescription>
+              </FormItem>
+            )}
+          /> */}
           <div>
             <div>
               <Button
                 size="lg"
                 type="submit"
-                className="w-full border py-3 px-4 text-base shadow-sm border-black"
+                className=" border shadow-sm border-black"
                 disabled={isPending}
               >
                 {isPending && <Loader className="h-5 w-5 animate-spin" />}

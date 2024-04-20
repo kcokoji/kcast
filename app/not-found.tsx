@@ -9,7 +9,7 @@ export default function NotFound() {
         <p className="text-xl text-gray-400">
           Could not find requested resource
         </p>
-        <Button size="lg" asChild>
+        <Button asChild>
           <Link href="/">Go back to home</Link>
         </Button>
       </div>

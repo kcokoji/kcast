@@ -29,10 +29,10 @@ export async function GET(request: Request) {
     );
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(`${origin}${next}dashboard`);
+      // If callbackUrl is null or empty, redirect to the podcasts
+      return NextResponse.redirect(`${origin}${next}podcasts`);
     }
   }
-
   // return the user to an error page with instructions
   return NextResponse.redirect(`${origin}/error`);
 }

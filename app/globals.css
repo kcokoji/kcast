@@ -3,23 +3,9 @@
 @tailwind utilities;
 
 /* Todo: Choose a primary color   */
+/* Hex 	#874d9d */
 /* light purple 	hsl(297, 60%, 57%) */
 /* dark purple 	hsl(283, 34%, 46%) */
-
-.spinner {
-  border-radius: 50%;
-  background:
-    radial-gradient(farthest-side, #874d9d 94%, #0000) top/3px 3px no-repeat,
-    conic-gradient(#0000 15%, #874d9d);
-  mask-image: radial-gradient(farthest-side, #0000 calc(100% - 3px), #000 0);
-  animation: spinner-c7wet2 1s infinite linear;
-}
-
-@keyframes spinner-c7wet2 {
-  100% {
-    transform: rotate(1turn);
-  }
-}
 
 @layer base {
   :root {

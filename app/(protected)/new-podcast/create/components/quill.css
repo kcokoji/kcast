@@ -1,0 +1,25 @@
+.ql-container {
+  min-height: 8rem;
+
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  border: 1px solid #ccc;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  padding: 10px; /* Padding around the toolbar */
+  border-bottom: 1px solid #ccc; /* Optional border for visual separation */
+}
+
+.ql-toolbar button {
+  background-color: #f4f4f4;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.ql-toolbar button:hover {
+  background-color: #e2e2e2;
+}

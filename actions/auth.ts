@@ -37,7 +37,7 @@ export async function signIn(
   if (callbackUrl) {
     redirect(callbackUrl);
   }
-  redirect("/dashboard");
+  redirect("/podcasts");
 }
 
 export async function newPassword(values: z.infer<typeof NewPasswordSchema>) {
@@ -56,7 +56,7 @@ export async function newPassword(values: z.infer<typeof NewPasswordSchema>) {
   if (error) {
     return { error: error.message };
   }
-  redirect("/dashboard");
+  redirect("/podcasts");
 }
 
 export async function reset(values: z.infer<typeof ResetPasswordSchema>) {
@@ -102,7 +102,7 @@ export async function reset(values: z.infer<typeof ResetPasswordSchema>) {
 //     if (error) {
 //       return { error: error.message };
 //     }
-//     revalidatePath("/dashboard", "layout");
+//     revalidatePath("/podcasts", "layout");
 //     return { success: "Name Updated" };
 //   } catch (error) {
 //     console.error("Error in Update Name:", error);
@@ -127,7 +127,7 @@ export async function reset(values: z.infer<typeof ResetPasswordSchema>) {
 //     if (error) {
 //       return { error: error.message };
 //     }
-//     revalidatePath("/dashboard", "layout");
+//     revalidatePath("/podcasts", "layout");
 //     return {
 //       success: `A link has been sent to your email `,
 //     };
@@ -164,6 +164,10 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
     return { error: error.message };
   }
 
+  if (!(data.user?.identities && data.user?.identities.length > 0)) {
+    return { error: "Already signed up, sign in instead?" };
+  }
+
   redirect(`/verify?email=${data.user?.email}`);
 }
 
@@ -198,6 +202,7 @@ export const verify = async (email: string | null) => {
   if (!email) {
     return { error: "Email is required" };
   }
+
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.resend({
