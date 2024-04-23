@@ -37,53 +37,63 @@ import { Checkbox } from "@/components/ui/checkbox";
 import MultiSelectFormField from "@/app/(protected)/components/multi-select";
 import { createPodcast } from "@/actions/podcast";
 import { toast } from "sonner";
+import axios from "axios";
 
 export default function NewPodcastForm() {
   const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   const [error, setError] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof NewPodcastSchema>>({
     resolver: zodResolver(NewPodcastSchema),
     defaultValues: {
-      // title: "",
-      // description: "",
+      title: "",
+      description: "",
       file: undefined,
-      // language: undefined,
-      // author: "",
-      // copyright: "",
-      // explicit: false,
-      // website: "",
-      // category: [],
+      language: undefined,
+      author: "",
+      copyright: "",
+      explicit: false,
+      website: "",
+      category: [],
     },
   });
 
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
-    const file = values.file[0];
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
-    console.log(buffer);
+    const formData = new FormData();
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) {
+        if (key === "file" && Array.isArray(value)) {
+          value.forEach((file) => {
+            formData.append(key, file);
+          });
+        } else {
+          //@ts-ignore
+          formData.append(key, value);
+        }
+      }
+    });
 
-    // startTransition(async () => {
-    //   createPodcast(values)
-    //     .then((data) => {
-    //       if (data?.error) {
-    //         form.reset();
-    //         setError(data.error);
-    //       } else {
-    //         toast.success("Podcast created");
-    //       }
-    //     })
-    //     .catch(() => setError("Oops! Something went wrong!"));
-    // });
+    startTransition(() => {
+      createPodcast(formData)
+        .then((data) => {
+          if (data?.error) {
+            toast.error(data.error);
+          } else {
+            toast.success("Podcast created!");
+          }
+        })
+        .catch(() => setError("Oops! Something went wrong!"));
+    });
   };
 
   return (
     <div className="mt-6 space-y-2">
-      <FormError message={error} />
+      {/* <FormError message={error} /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* <FormField
+          <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
@@ -134,6 +144,7 @@ export default function NewPodcastForm() {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   disabled={isPending}
+                  {...field}
                 >
                   <FormControl>
                     <SelectTrigger className="bg-white">
@@ -238,7 +249,7 @@ export default function NewPodcastForm() {
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
 
           <FormField
             control={form.control}
@@ -254,7 +265,7 @@ export default function NewPodcastForm() {
                       maxFiles={1}
                       maxSize={3 * 1024 * 1024}
                       disabled={isPending}
-                      // progresses={progresses}
+                      accept={{ "image/png": [], "image/jpeg": [] }}
                     />
                   </FormControl>
                   <FormMessage />
@@ -262,7 +273,7 @@ export default function NewPodcastForm() {
               </div>
             )}
           />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="explicit"
             render={({ field }) => (
@@ -279,19 +290,13 @@ export default function NewPodcastForm() {
                 </FormDescription>
               </FormItem>
             )}
-          /> */}
+          />
+
           <div>
-            <div>
-              <Button
-                size="lg"
-                type="submit"
-                className=" border shadow-sm border-black"
-                disabled={isPending}
-              >
-                {isPending && <Loader className="h-5 w-5 animate-spin" />}
-                <span>Next</span>
-              </Button>
-            </div>
+            <Button size="lg" type="submit" disabled={isPending}>
+              {isPending && <Loader className="h-5 w-5 animate-spin" />}
+              <span>Create</span>
+            </Button>
           </div>
         </form>
       </Form>

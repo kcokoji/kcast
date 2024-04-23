@@ -90,8 +90,7 @@ export function FileUploader(props: FileUploaderProps) {
     value: valueProp,
     onValueChange,
     onUpload,
-
-    accept = { "image/*": [] },
+    accept = props.accept || { "image/*": [] },
     maxSize = 1024 * 1024 * 3,
     maxFiles = 1,
     multiple = false,
@@ -245,6 +244,7 @@ export function FileUploader(props: FileUploaderProps) {
                 key={index}
                 file={file}
                 onRemove={() => onRemove(index)}
+                disabled={disabled}
               />
             ))}
           </div>
@@ -257,13 +257,14 @@ export function FileUploader(props: FileUploaderProps) {
 interface FileCardProps {
   file: File;
   onRemove: () => void;
+  disabled: boolean;
 }
 
-function FileCard({ file, onRemove }: FileCardProps) {
+function FileCard({ file, onRemove, disabled }: FileCardProps) {
   return (
     <div className="relative flex items-center space-x-4">
       <div className="flex flex-1 space-x-4">
-        {isFileWithPreview(file) ? (
+        {isFileWithPreview(file) && (
           <Image
             src={file.preview}
             alt={file.name}
@@ -272,7 +273,13 @@ function FileCard({ file, onRemove }: FileCardProps) {
             loading="lazy"
             className="aspect-square shrink-0 rounded-md object-cover"
           />
-        ) : null}
+        )}
+        {isAudioFile(file) && (
+          <audio controls className="w-full">
+            <source src={file.preview} type={file.type} />
+            Your browser does not support the audio element.
+          </audio>
+        )}
         <div className="flex w-full flex-col gap-2">
           <div className="space-y-px">
             <p className="line-clamp-1 text-sm font-medium text-foreground/80">
@@ -291,6 +298,7 @@ function FileCard({ file, onRemove }: FileCardProps) {
           size="icon"
           className="size-7"
           onClick={onRemove}
+          disabled={disabled}
         >
           <TrashIcon className="size-4 " aria-hidden="true" />
           <span className="sr-only">Remove file</span>
@@ -302,4 +310,8 @@ function FileCard({ file, onRemove }: FileCardProps) {
 
 function isFileWithPreview(file: File): file is File & { preview: string } {
   return "preview" in file && typeof file.preview === "string";
+}
+
+function isAudioFile(file: File): file is File & { preview: string } {
+  return file.type.startsWith("audio/");
 }

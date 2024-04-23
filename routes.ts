@@ -26,6 +26,12 @@ export const authRoutes = [
 export const apiAuthPrefix = "/api/auth";
 
 /**
+ * The prefix for Podcast routes
+ * Routes that start with this prefix are for podcasts
+ * @type {string}
+ */
+
+/**
  * The prefix for Admin routes
  * Routes that start with this prefix are used only by admins
  */

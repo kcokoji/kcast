@@ -9,34 +9,29 @@ datasource db {
 }
 
 model Podcast {
-  id          String   @id @default(uuid())
+  id          String              @id @default(uuid())
   title       String
   description String
   imageUrl    String
   language    String
   website     String?
   author      String
-  Category    String[]
-  country     String?
+  category    String[]
   copyright   String
-  userId      String   @db.Uuid
-
-  explicit   Boolean             @default(false)
-  episodes   Episode[]           @relation("PodcastEpisodes")
-  members    PodcastMembership[] @relation("PodcastMemberships")
-  invitation Invitation[]        @relation("PodcastInvitations")
-  createdAt  DateTime            @default(now())
-  updatedAt  DateTime            @updatedAt
+  userId      String              @db.Uuid
+  explicit    Boolean             @default(false)
+  episodes    Episode[]           @relation("PodcastEpisodes")
+  members     PodcastMembership[] @relation("PodcastMemberships")
+  invitation  Invitation[]        @relation("PodcastInvitations")
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 }
 
 model PodcastMembership {
   podcastId String
-
-  podcast Podcast @relation("PodcastMemberships", fields: [podcastId], references: [id], onDelete: Cascade)
-  userId  String  @db.Uuid
-
-  roleId    Int
-  role      Role     @relation("PodcastMembershipRoles", fields: [roleId], references: [id])
+  podcast   Podcast  @relation("PodcastMemberships", fields: [podcastId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  role      Role
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -47,6 +42,12 @@ enum EpisodeStatus {
   Draft
   Scheduled
   Published
+}
+
+enum Role {
+  Admin
+  Editor
+  Viewer
 }
 
 model Episode {
@@ -77,26 +78,14 @@ model Enclosure {
 }
 
 model Invitation {
-  id       Int     @id @default(autoincrement())
-  email    String
-  roleId   Int
-  accepted Boolean @default(false)
-  userId   String  @db.Uuid
-
+  id        Int      @id @default(autoincrement())
+  email     String
+  roleId    Int
+  accepted  Boolean  @default(false)
+  userId    String   @db.Uuid
   podcastId String
-  podcast   Podcast @relation("PodcastInvitations", fields: [podcastId], references: [id], onDelete: Cascade)
-  role      Role    @relation("InvitationRoles", fields: [roleId], references: [id])
-
+  podcast   Podcast  @relation("PodcastInvitations", fields: [podcastId], references: [id], onDelete: Cascade)
+  role      Role
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Role {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  invitations       Invitation[]        @relation("InvitationRoles")
-  podcastMembership PodcastMembership[] @relation("PodcastMembershipRoles")
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
 }
