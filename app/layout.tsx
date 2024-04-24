@@ -55,7 +55,7 @@ export default function RootLayout({
         className={` antialiased ${clashDisplay.variable} ${GeistSans.className}`}
       >
         {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="top-right" closeButton />
         {children}
         <SpeedInsights />
         <Analytics />

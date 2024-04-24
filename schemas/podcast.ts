@@ -16,10 +16,7 @@ export const NewPodcastSchema = z.object({
     .max(3000, {
       message: "Maximum characters exceeded",
     }),
-  file: z
-    .array(z.instanceof(File))
-    .nonempty({ message: "At least one file is required" }),
-
+  file: z.array(z.instanceof(File)).optional(),
   language: z.string(),
   website: z.string().url().optional(),
   author: z
@@ -43,4 +40,5 @@ export const NewPodcastSchema = z.object({
       message: "Maximum characters exceeded",
     }),
   explicit: z.boolean(),
+  imageUrl: z.string().optional(),
 });

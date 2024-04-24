@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input";
 
 import { NewPodcastSchema } from "@/schemas/podcast";
 
-import { FormError } from "@/app/(auth)/components/form-error";
 import { Loader } from "lucide-react";
 import { Editor } from "./text-editor";
 import {
@@ -41,16 +40,12 @@ import axios from "axios";
 
 export default function NewPodcastForm() {
   const [isPending, startTransition] = useTransition();
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState<string | undefined>("");
-
+  const [isLoading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof NewPodcastSchema>>({
     resolver: zodResolver(NewPodcastSchema),
     defaultValues: {
       title: "",
       description: "",
-      file: undefined,
       language: undefined,
       author: "",
       copyright: "",
@@ -61,36 +56,59 @@ export default function NewPodcastForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
-    const formData = new FormData();
-    Object.entries(values).forEach(([key, value]) => {
-      if (value) {
-        if (key === "file" && Array.isArray(value)) {
-          value.forEach((file) => {
-            formData.append(key, file);
-          });
-        } else {
-          //@ts-ignore
-          formData.append(key, value);
-        }
+    try {
+      setLoading(true);
+      // Check if file exists
+      if (!values.file) {
+        return toast.error("Cover art is required");
       }
-    });
 
-    startTransition(() => {
-      createPodcast(formData)
-        .then((data) => {
-          if (data?.error) {
-            toast.error(data.error);
-          } else {
-            toast.success("Podcast created!");
-          }
-        })
-        .catch(() => setError("Oops! Something went wrong!"));
-    });
+      // Prepare form data
+      const formData = new FormData();
+      formData.append("file", values.file[0]);
+
+      // Upload file
+      const response = await axios.post("/api/podcast/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+
+      // Get image URL from response
+      const imageUrl = response.data.publicUrl;
+
+      // Prepare podcast data
+      const data = {
+        imageUrl,
+        description: values.description,
+        language: values.language,
+        author: values.author,
+        copyright: values.copyright,
+        explicit: values.explicit,
+        website: values.website,
+        category: values.category,
+        title: values.title,
+      };
+
+      // Create podcast
+      const podcastResponse = await createPodcast(data);
+
+      // Check if there's an error
+      if (podcastResponse?.error) {
+        toast.error(podcastResponse.error);
+      } else {
+        toast.success("Podcast created!");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Oops!, Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="mt-6 space-y-2">
-      {/* <FormError message={error} /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -102,7 +120,7 @@ export default function NewPodcastForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
+                    disabled={isLoading}
                     className="bg-white"
                     type="text"
                   />
@@ -123,7 +141,7 @@ export default function NewPodcastForm() {
                 <FormLabel>Description</FormLabel>
                 <div className="min-h-40 bg-white rounded-md">
                   <FormControl>
-                    <Editor {...field} disabled={isPending} />
+                    <Editor {...field} disabled={isLoading} />
                   </FormControl>
                 </div>
                 <FormDescription className="text-end">
@@ -143,7 +161,7 @@ export default function NewPodcastForm() {
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
-                  disabled={isPending}
+                  disabled={isLoading}
                   {...field}
                 >
                   <FormControl>
@@ -173,7 +191,7 @@ export default function NewPodcastForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
+                    disabled={isLoading}
                     className="bg-white"
                     type="text"
                   />
@@ -194,7 +212,7 @@ export default function NewPodcastForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
+                    disabled={isLoading}
                     className="bg-white"
                     type="text"
                   />
@@ -219,7 +237,7 @@ export default function NewPodcastForm() {
                     onValueChange={field.onChange}
                     placeholder="Select options"
                     variant="inverted"
-                    disabled={isPending}
+                    disabled={isLoading}
                   />
                 </FormControl>
                 <FormDescription className="text-end">
@@ -238,7 +256,7 @@ export default function NewPodcastForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
+                    disabled={isLoading}
                     className="bg-white"
                     type="text"
                   />
@@ -264,7 +282,7 @@ export default function NewPodcastForm() {
                       onValueChange={field.onChange}
                       maxFiles={1}
                       maxSize={3 * 1024 * 1024}
-                      disabled={isPending}
+                      disabled={isLoading}
                       accept={{ "image/png": [], "image/jpeg": [] }}
                     />
                   </FormControl>
@@ -282,7 +300,7 @@ export default function NewPodcastForm() {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    disabled={isPending}
+                    disabled={isLoading}
                   />
                 </FormControl>
                 <FormDescription className="text-base lg:text-lg text-black">
@@ -293,8 +311,8 @@ export default function NewPodcastForm() {
           />
 
           <div>
-            <Button size="lg" type="submit" disabled={isPending}>
-              {isPending && <Loader className="h-5 w-5 animate-spin" />}
+            <Button size="lg" type="submit" disabled={isLoading}>
+              {isLoading && <Loader className="h-5 w-5 animate-spin" />}
               <span>Create</span>
             </Button>
           </div>
