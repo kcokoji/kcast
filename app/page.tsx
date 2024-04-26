@@ -9,7 +9,7 @@ export default async function Home() {
   const user = await getUser();
   return (
     <div className=" min-h-screen bg-gray-950 relative overflow-hidden">
-      <Navbar user={user} />
+      <Navbar />
       <HeroSection />
       <FeaturesSection />
       <Testimonials />

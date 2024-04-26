@@ -14,11 +14,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { User } from "@supabase/supabase-js";
 
-interface Props {
-  user: User;
-}
-
-export default function Navbar({ user }: Props) {
+export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -42,29 +38,23 @@ export default function Navbar({ user }: Props) {
             </h1>
           </Link>
           <div className="lg:flex hidden">
-            {user ? (
-              <Button asChild>
-                <Link href="/podcasts">Dashboard</Link>
+            <div className="lg:flex items-center gap-2">
+              <Button variant="secondary" asChild>
+                <Link className="flex items-center gap-1.5" href="/login">
+                  Login
+                  <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
+                </Link>
               </Button>
-            ) : (
-              <div className="lg:flex items-center gap-2">
-                <Button variant="secondary" asChild>
-                  <Link className="flex items-center gap-1.5" href="/login">
-                    Login
-                    <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
-                  </Link>
-                </Button>
-                <Button
-                  className="group transition-all hover:scale-105 duration-300 ease-in-out"
-                  asChild
-                >
-                  <Link className="flex items-center gap-1.5" href="/register">
-                    Sign up
-                    <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
-                  </Link>
-                </Button>
-              </div>
-            )}
+              <Button
+                className="group transition-all hover:scale-105 duration-300 ease-in-out"
+                asChild
+              >
+                <Link className="flex items-center gap-1.5" href="/register">
+                  Sign up
+                  <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
           <Button
             size="icon"
@@ -89,7 +79,19 @@ export default function Navbar({ user }: Props) {
                 transition={{ duration: 0.5, type: "tween", ease: "easeInOut" }}
               >
                 <Container className="flex flex-col gap-2">
-                  {user ? (
+                  <div>
+                    <Button
+                      asChild
+                      size="lg"
+                      variant="secondary"
+                      className="w-full"
+                      onClick={toggleMobileMenu}
+                    >
+                      <Link className="flex items-center gap-1.5" href="/login">
+                        Login
+                        <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
+                      </Link>
+                    </Button>
                     <Button
                       size="lg"
                       className="group transition-all hover:scale-105 duration-300 ease-in-out w-full"
@@ -100,43 +102,11 @@ export default function Navbar({ user }: Props) {
                         className="flex items-center gap-1.5"
                         href="/register"
                       >
-                        Dashboard
+                        Sign up
                         <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
                       </Link>
                     </Button>
-                  ) : (
-                    <div>
-                      <Button
-                        asChild
-                        size="lg"
-                        variant="secondary"
-                        className="w-full"
-                        onClick={toggleMobileMenu}
-                      >
-                        <Link
-                          className="flex items-center gap-1.5"
-                          href="/login"
-                        >
-                          Login
-                          <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
-                        </Link>
-                      </Button>
-                      <Button
-                        size="lg"
-                        className="group transition-all hover:scale-105 duration-300 ease-in-out w-full"
-                        asChild
-                        onClick={toggleMobileMenu}
-                      >
-                        <Link
-                          className="flex items-center gap-1.5"
-                          href="/register"
-                        >
-                          Sign up
-                          <ArrowRightCircleIcon className="transition-transform group-hover:-rotate-45 group-active:-rotate-12 w-5 h-5" />
-                        </Link>
-                      </Button>
-                    </div>
-                  )}
+                  </div>
                 </Container>
               </motion.div>
             )}
