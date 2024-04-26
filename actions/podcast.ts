@@ -50,5 +50,5 @@ export async function createPodcast(values: z.infer<typeof NewPodcastSchema>) {
     },
   });
 
-  redirect("/podcasts");
+  redirect(`/podcasts/${podcast.id}`);
 }
