@@ -5,10 +5,13 @@ import Link from "next/link";
 import { PodcastSkeleton, Podcasts } from "./components/podcast-card";
 import CreateButton from "../components/create-button";
 import Header from "../components/header";
+import { redirect } from "next/navigation";
 
 export default async function PodcastsPage() {
   const user = await getUser();
-
+  if (!user) {
+    redirect("/login");
+  }
   return (
     <Container className="space-y-10">
       <Header title="Podcasts" description="Manage podcasts here" />

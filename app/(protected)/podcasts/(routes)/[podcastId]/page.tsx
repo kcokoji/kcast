@@ -14,6 +14,7 @@ import { getUser } from "@/utils/supabase/user";
 import { db } from "@/lib/db";
 import NotFound from "./notFound";
 import Header from "@/app/(protected)/components/header";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -44,6 +45,9 @@ export default async function PodcastPage({
   params: { podcastId: string };
 }) {
   const user = await getUser();
+  if (!user) {
+    redirect("/login");
+  }
   const membership = await db.podcastMembership.findFirst({
     where: {
       podcastId: params.podcastId,
