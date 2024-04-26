@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { NewPodcastSchema } from "@/schemas/podcast";
 
 import { Loader } from "lucide-react";
-import { Editor } from "./text-editor";
+import { Editor } from "../../../../../components/ui/text-editor";
 import {
   Select,
   SelectContent,
@@ -50,7 +50,7 @@ export default function NewPodcastForm() {
       author: "",
       copyright: "",
       explicit: false,
-      website: "",
+
       category: [],
     },
   });
@@ -235,14 +235,12 @@ export default function NewPodcastForm() {
                     options={categories}
                     defaultValue={field.value}
                     onValueChange={field.onChange}
-                    placeholder="Select options"
+                    placeholder="Choose a category"
                     variant="inverted"
                     disabled={isLoading}
                   />
                 </FormControl>
-                <FormDescription className="text-end">
-                  Choose categories related to your podcast
-                </FormDescription>
+
                 <FormMessage />
               </FormItem>
             )}

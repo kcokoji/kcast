@@ -11,13 +11,57 @@ import {
 import { Progress } from "@/components/ui/progress";
 
 import { getUser } from "@/utils/supabase/user";
-import { UserButton } from "../../../components/user-button";
-export default async function Podcasts() {
+import { db } from "@/lib/db";
+import NotFound from "./notFound";
+import Header from "@/app/(protected)/components/header";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { podcastId: string };
+}) {
+  const podcast = await db.podcast.findFirst({
+    where: {
+      id: params.podcastId,
+    },
+  });
+
+  if (!podcast) {
+    return {
+      title: "Podcast Not Found",
+    };
+  }
+
+  return {
+    title: `${podcast?.title}  ꞏ Kcast`,
+    description: podcast?.description,
+  };
+}
+
+export default async function PodcastPage({
+  params,
+}: {
+  params: { podcastId: string };
+}) {
   const user = await getUser();
+  const membership = await db.podcastMembership.findFirst({
+    where: {
+      podcastId: params.podcastId,
+      userId: user.id,
+    },
+    include: {
+      podcast: true,
+    },
+  });
+
+  if (!membership) {
+    return <NotFound />;
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4 ">
+        <Header title={membership.podcast.title} />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
           <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">

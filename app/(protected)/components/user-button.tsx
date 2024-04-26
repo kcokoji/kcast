@@ -6,6 +6,7 @@ import {
   LogOutIcon,
   MenuSquareIcon,
   LayoutDashboard,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -37,33 +38,20 @@ export const UserButton = ({ user }: Props) => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60" align="end">
-        <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
+      <DropdownMenuContent className=" w-64" align="end">
+        <DropdownMenuLabel className="tracking-wide font-medium text-muted-foreground">
+          {user?.email}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <Link href="/profile">
-          <DropdownMenuItem>
-            <UserIcon className="h-4 w-4 mr-2" />
-            Profile
+        <Link href="/account">
+          <DropdownMenuItem className=" justify-between text-base font-medium">
+            Account Settings
+            <Settings className="h-4 w-4" />
           </DropdownMenuItem>
         </Link>
-
-        <Link href="/menus">
-          <DropdownMenuItem>
-            <MenuSquareIcon className="h-4 w-4 mr-2" />
-            Menu
-          </DropdownMenuItem>
-        </Link>
-        <Link href="/orders">
-          <DropdownMenuItem>
-            <Package2Icon className="h-4 w-4 mr-2" />
-            Orders
-          </DropdownMenuItem>
-        </Link>
-
         <LogoutButton>
-          <DropdownMenuItem>
-            <LogOutIcon className="h-4 w-4 mr-2" />
+          <DropdownMenuItem className=" justify-between text-base font-medium">
             Logout
           </DropdownMenuItem>
         </LogoutButton>

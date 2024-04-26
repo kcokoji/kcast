@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const { data: imageUrl } = await supabase.storage
-      .from("public-bucket")
+      .from("podcast-image")
       .getPublicUrl(image.path);
 
     return NextResponse.json(imageUrl, { status: 200 });

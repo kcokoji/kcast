@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { UserButton } from "./user-button";
 import { User } from "@supabase/supabase-js";
+import Notifications from "./notifications";
 
 interface Props {
   user: User;
@@ -27,7 +28,8 @@ export default function PodcastNav({ user }: Props) {
               quality={100}
             />
           </Link>
-          <div className="lg:flex items-center gap-2">
+          <div className="flex items-center gap-4 justify-center">
+            <Notifications />
             <UserButton user={user} />
           </div>
         </Container>

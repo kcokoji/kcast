@@ -2,11 +2,9 @@ import { Metadata } from "next";
 import PodcastNav from "./components/navbar";
 import { getUser } from "@/utils/supabase/user";
 import Footer from "@/components/footer";
-import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Podcasts | Kcast ",
+  title: "Podcasts ꞏ Kcast ",
 };
 
 export default async function PodcastsLayout({

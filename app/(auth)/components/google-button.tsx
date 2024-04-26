@@ -16,8 +16,6 @@ export default function GoogleButton({ loading }: Props) {
   const [error, setError] = useState("");
 
   const onSubmit = () => {
-    console.log("here");
-
     startTransition(() => {
       google()
         .then((data) => {

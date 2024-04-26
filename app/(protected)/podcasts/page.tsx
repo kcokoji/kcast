@@ -1,24 +1,24 @@
-import { LogoutButton } from "@/app/(auth)/components/logout-button";
-import { db } from "@/lib/db";
 import { getUser } from "@/utils/supabase/user";
-import React from "react";
+import React, { Suspense } from "react";
+import Container from "@/components/container";
+import Link from "next/link";
+import { PodcastSkeleton, Podcasts } from "./components/podcast-card";
+import CreateButton from "../components/create-button";
+import Header from "../components/header";
 
 export default async function PodcastsPage() {
   const user = await getUser();
-  const podcasts = await db.podcast.findMany({
-    where: {
-      userId: user.id,
-    },
-    select: {
-      id: true,
-      title: true,
-      imageUrl: true,
-    },
-  });
+
   return (
-    <div>
-      <LogoutButton>click me</LogoutButton>
-      <div>{JSON.stringify(podcasts)}</div>
-    </div>
+    <Container className="space-y-10">
+      <Header title="Podcasts" description="Manage podcasts here" />
+      <div className="flex justify-end">
+        <CreateButton />{" "}
+      </div>
+
+      <Suspense fallback={<PodcastSkeleton />}>
+        <Podcasts user={user} />
+      </Suspense>
+    </Container>
   );
 }
