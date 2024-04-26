@@ -174,9 +174,15 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
 export const logout = async () => {
   const supabase = createClient();
 
-  await supabase.auth.signOut();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  redirect("/login");
+  if (user) {
+    await supabase.auth.signOut();
+  }
+
+  redirect("login");
 };
 
 export const google = async () => {
