@@ -15,13 +15,13 @@ import {
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { unstable_noStore } from "next/cache";
 
 interface Props {
   user: User;
 }
 export async function Podcasts({ user }: Props) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
+  unstable_noStore();
   const membership = await db.podcastMembership.findMany({
     where: {
       userId: user.id,

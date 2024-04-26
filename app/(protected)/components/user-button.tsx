@@ -24,7 +24,7 @@ import Link from "next/link";
 import { User } from "@supabase/supabase-js";
 
 interface Props {
-  user: User;
+  user: User | null;
 }
 
 export const UserButton = ({ user }: Props) => {
@@ -32,7 +32,7 @@ export const UserButton = ({ user }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src={user.user_metadata.avatar_url || ""} />
+          <AvatarImage src={user?.user_metadata.avatar_url || ""} />
           <AvatarFallback className="bg-primary">
             <UserIcon className="text-white" />
           </AvatarFallback>

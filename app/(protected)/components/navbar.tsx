@@ -11,7 +11,7 @@ import { User } from "@supabase/supabase-js";
 import Notifications from "./notifications";
 
 interface Props {
-  user: User;
+  user: User | null;
 }
 
 export default function PodcastNav({ user }: Props) {
