@@ -70,7 +70,7 @@ export default function NewPodcastForm() {
       // Upload file
       const response = await axios.post("/api/podcast/upload", formData, {
         headers: {
-          "content-type": "multipart/form-data",
+          Accept: "multipart/form-data",
         },
       });
 
