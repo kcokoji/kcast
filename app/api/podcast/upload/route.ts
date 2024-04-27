@@ -3,6 +3,7 @@ import { getUser } from "@/utils/supabase/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  //
   try {
     const user = await getUser();
     const supabase = createClient();
