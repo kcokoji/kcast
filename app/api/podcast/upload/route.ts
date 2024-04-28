@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-
+import { decode } from "base64-arraybuffer";
 export async function POST(request: NextRequest) {
   try {
     const supabase = createClient();
@@ -11,10 +11,18 @@ export async function POST(request: NextRequest) {
     }
     const { searchParams } = new URL(request.url);
     const filename = searchParams.get("filename");
+    const filetype = searchParams.get("filetype");
 
-    const file = request.body;
+    const body = await request.json();
 
-    if (!file) {
+    const { base64String: fileData } = body;
+
+    if (!fileData) {
+      return new NextResponse(JSON.stringify({ error: "File is required" }), {
+        status: 400,
+      });
+    }
+    if (!filetype) {
       return new NextResponse(JSON.stringify({ error: "File is required" }), {
         status: 400,
       });
@@ -22,7 +30,9 @@ export async function POST(request: NextRequest) {
 
     const { data: image, error: uploadError } = await supabase.storage
       .from("podcast-image")
-      .upload(`${user.id}/${filename}`, file);
+      .upload(`${user.id}/${filename}`, decode(fileData), {
+        contentType: filetype,
+      });
 
     if (uploadError) {
       console.log(uploadError);
@@ -38,7 +48,7 @@ export async function POST(request: NextRequest) {
       .from("podcast-image")
       .getPublicUrl(image.path);
 
-    return NextResponse.json({ status: 200 });
+    return NextResponse.json(imageUrl.publicUrl, { status: 200 });
   } catch (error) {
     console.log("FILE UPLOAD ERROR", error);
     return new NextResponse("Internal error", { status: 500 });

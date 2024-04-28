@@ -55,6 +55,28 @@ export default function NewPodcastForm() {
     },
   });
 
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          reject(new Error("Failed to convert file to base64"));
+          return;
+        }
+
+        const base64String = reader.result as string;
+        resolve(base64String.split(",")[1]);
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
     try {
       setLoading(true);
@@ -65,13 +87,17 @@ export default function NewPodcastForm() {
 
       // Prepare form data
       const file = values.file[0];
-
+      const base64String = await convertFileToBase64(file);
       // Upload file
+      const requestBody = {
+        base64String: base64String,
+      };
+
       const response = await fetch(
-        `/api/podcast/upload?filename=${file.name}`,
+        `/api/podcast/upload?filename=${file.name}&filetype=${file.type}`,
         {
           method: "POST",
-          body: file,
+          body: JSON.stringify(requestBody),
         },
       );
 
