@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File;
 
     if (!file) {
-      return new NextResponse(JSON.stringify({ error: "File is required" }), {
+      return new NextResponse("File is required", {
         status: 400,
       });
     }
@@ -26,18 +26,15 @@ export async function POST(req: NextRequest) {
     if (uploadError) {
       console.log(uploadError);
 
-      return new NextResponse(
-        JSON.stringify({ error: "Error uploading file" }),
-        {
-          status: 400,
-        },
-      );
+      return new NextResponse("Error uploading file", {
+        status: 400,
+      });
     }
     const { data: imageUrl } = await supabase.storage
       .from("podcast-image")
       .getPublicUrl(image.path);
 
-    return NextResponse.json(imageUrl, { status: 200 });
+    return NextResponse.json(imageUrl);
   } catch (error) {
     console.log("FILE UPLOAD ERROR", error);
     return new NextResponse("Internal error", { status: 500 });
