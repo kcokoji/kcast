@@ -57,7 +57,6 @@ export default function NewPodcastForm() {
 
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
     try {
-      const baseUrl = "https://kcast.vercel.app";
       setLoading(true);
       // Check if file exists
       if (!values.file) {
@@ -65,23 +64,19 @@ export default function NewPodcastForm() {
       }
 
       // Prepare form data
-      const formData = new FormData();
-      formData.append("file", values.file[0]);
+      const file = values.file[0];
 
       // Upload file
-      const response = await axios.post(
-        `${baseUrl}/api/podcast/upload`,
-        formData,
+      const response = await fetch(
+        `/api/podcast/upload?filename=${file.name}`,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "multipart/form-data",
-          },
+          method: "POST",
+          body: file,
         },
       );
 
       // Get image URL from response
-      const imageUrl = response.data.publicUrl;
+      const imageUrl = await response.json();
 
       // Prepare podcast data
       const data = {
