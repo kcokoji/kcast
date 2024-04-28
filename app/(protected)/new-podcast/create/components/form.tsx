@@ -57,6 +57,7 @@ export default function NewPodcastForm() {
 
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
     try {
+      const baseUrl = "https://kcast.vercel.app";
       setLoading(true);
       // Check if file exists
       if (!values.file) {
@@ -68,12 +69,16 @@ export default function NewPodcastForm() {
       formData.append("file", values.file[0]);
 
       // Upload file
-      const response = await axios.post("/api/podcast/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "multipart/form-data",
+      const response = await axios.post(
+        `${baseUrl}/api/podcast/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "multipart/form-data",
+          },
         },
-      });
+      );
 
       // Get image URL from response
       const imageUrl = response.data.publicUrl;
@@ -102,7 +107,7 @@ export default function NewPodcastForm() {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Oops!, Something went wrong");
+      toast.error("Opps,Something went wrong");
     } finally {
       setLoading(false);
     }
