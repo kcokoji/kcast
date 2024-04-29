@@ -1,8 +1,7 @@
-import { FilePlus } from "lucide-react";
+import { FilePlus, LibraryBig } from "lucide-react";
 import Image from "next/image";
 import { User } from "@supabase/supabase-js";
 import { db } from "@/lib/db";
-import Container from "@/components/container";
 import CreateButton from "../../components/create-button";
 
 import {
@@ -16,6 +15,9 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { unstable_noStore } from "next/cache";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { UserIcon } from "@heroicons/react/16/solid";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   user: User;
@@ -35,44 +37,46 @@ export async function Podcasts({ user }: Props) {
   return (
     <div>
       {membership.length > 0 ? (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
-            {membership.map((member) => (
-              <Link
-                key={member.podcast.id}
-                href={`/podcasts/${member.podcast.id}`}
-              >
-                <Card className="w-full max-w-2xl hover:scale-95 transition-all duration-300 ease-in-out">
-                  <div className="grid grid-cols-2">
-                    <div className="bg-muted-foreground/80 rounded-l rounded-md">
-                      <Image
-                        alt={member.podcast.title}
-                        className="w-full h-full object-cover"
-                        height="300"
-                        src={member.podcast.imageUrl}
-                        placeholder="blur"
-                        blurDataURL={member.podcast.imageUrl}
-                        style={{
-                          aspectRatio: "250/250",
-                          objectFit: "cover",
-                        }}
-                        width="250"
-                      />
-                    </div>
-                    <CardHeader className="flex justify-center  flex-col">
-                      <CardTitle>{member.podcast.title}</CardTitle>
-                      <CardDescription>
-                        {member.role === "Admin" ? "Owner" : "Collaborator"}
-                      </CardDescription>
-                    </CardHeader>
-                  </div>
-                </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center">
+          {membership.map((member) => (
+            <Card
+              className="w-full shadow-xl transform transition-transform hover:scale-95"
+              key={member.podcast.id}
+            >
+              <Link href={`/podcasts/${member.podcast.id}`}>
+                <div className=" rounded-t-md overflow-hidden bg-muted-foreground/60">
+                  <AspectRatio ratio={1 / 1}>
+                    <Image
+                      src={member.podcast.imageUrl}
+                      alt="Course Image"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover"
+                    />
+                  </AspectRatio>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="line-clamp-1 text-lg">
+                    {member.podcast.title}
+                  </CardTitle>
+                  <CardDescription className="flex items-center">
+                    <span className="text-white bg-primary p-1  mr-2 rounded-full">
+                      {member.role === "Admin" ? (
+                        <UserIcon className="h-5 w-5 " />
+                      ) : (
+                        <UsersIcon className="h-5 w-5 " />
+                      )}
+                    </span>{" "}
+                    {member.role === "Admin" ? "Owner" : "Collaborator"}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent></CardContent>
               </Link>
-            ))}
-          </div>
+            </Card>
+          ))}
         </div>
       ) : (
-        <Container className="flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <div className="group relative bg-white grid h-60 w-full  place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-4 text-center ">
             <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
               <div className="rounded-full border border-dashed p-3">
@@ -90,7 +94,7 @@ export async function Podcasts({ user }: Props) {
               </div>
             </div>
           </div>
-        </Container>
+        </div>
       )}
     </div>
   );
@@ -98,20 +102,15 @@ export async function Podcasts({ user }: Props) {
 
 export function PodcastSkeleton() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-[5px] place-content-center">
-      <div className="flex gap-4">
-        <Skeleton className="h-[300px] w-[300px] rounded-xl" />
-        <div className="space-y-2 flex justify-center flex-col">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-[5px] place-items-center">
+      <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
       </div>
-      <div className="flex gap-4">
-        <Skeleton className="h-[300px] w-[300px] rounded-xl" />
-        <div className="space-y-2 flex justify-center flex-col">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
-        </div>
+      <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
+      </div>
+      <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
       </div>
     </div>
   );

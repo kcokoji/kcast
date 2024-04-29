@@ -308,3 +308,25 @@ export const categories = [
   { value: "tv-film-film-reviews", label: "TV & Film - Film Reviews" },
   { value: "tv-film-tv-reviews", label: "TV & Film - TV Reviews" },
 ];
+
+export const convertFileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) {
+        reject(new Error("Failed to convert file to base64"));
+        return;
+      }
+
+      const base64String = reader.result as string;
+      resolve(base64String.split(",")[1]);
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+};

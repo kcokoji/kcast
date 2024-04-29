@@ -125,7 +125,7 @@ const MultiSelectFormField = React.forwardRef<
             {...props}
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
             variant="outline"
-            className="flex w-full rounded-md border px-3 py-6 border-border  focus:outline-none focus:ring-1 focus:ring-black disabled:cursor-not-allowed disabled:opacity-50  items-center justify-between bg-white shadow-none"
+            className="flex w-full h-auto rounded-md border px-3 py-4 border-border  focus:outline-none focus:ring-1 focus:ring-black disabled:cursor-not-allowed disabled:opacity-50  items-center justify-between bg-white shadow-none"
             disabled={disabled}
           >
             {selectedValues.length > 0 ? (

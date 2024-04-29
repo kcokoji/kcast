@@ -45,7 +45,7 @@ export const HeroSection = () => {
           title=" Start your podcasting journey with us"
         />
         <P
-          title="Amplify your message . Your stories, your platform Let's turn your ideas into impactful conversations."
+          title="Unleash your voice ,Inspire your audience, Share your story."
           isInView={isInView}
           className="lg:text-start"
         />

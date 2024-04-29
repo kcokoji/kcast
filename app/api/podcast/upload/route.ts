@@ -10,8 +10,8 @@ export async function POST(request: NextRequest) {
       return new NextResponse("Unauthorized", { status: 403 });
     }
     const { searchParams } = new URL(request.url);
-    const filename = searchParams.get("filename");
-    const filetype = searchParams.get("filetype");
+    const fileName = searchParams.get("filename");
+    const fileType = searchParams.get("filetype");
 
     const body = await request.json();
 
@@ -22,7 +22,13 @@ export async function POST(request: NextRequest) {
         status: 400,
       });
     }
-    if (!filetype) {
+
+    if (!fileName) {
+      return new NextResponse(JSON.stringify({ error: "File is required" }), {
+        status: 400,
+      });
+    }
+    if (!fileType) {
       return new NextResponse(JSON.stringify({ error: "File is required" }), {
         status: 400,
       });
@@ -30,8 +36,8 @@ export async function POST(request: NextRequest) {
 
     const { data: image, error: uploadError } = await supabase.storage
       .from("podcast-image")
-      .upload(`${user.id}/${filename}`, decode(fileData), {
-        contentType: filetype,
+      .upload(`${user.id}/${fileName}`, decode(fileData), {
+        contentType: fileType,
       });
 
     if (uploadError) {

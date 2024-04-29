@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LanguageOptions, categories } from "@/lib/utils";
+import { LanguageOptions, categories, convertFileToBase64 } from "@/lib/utils";
 
 import { FileUploader } from "@/app/(protected)/components/file-uploader";
 
@@ -36,10 +36,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import MultiSelectFormField from "@/app/(protected)/components/multi-select";
 import { createPodcast } from "@/actions/podcast";
 import { toast } from "sonner";
-import axios from "axios";
 
 export default function NewPodcastForm() {
-  const [isPending, startTransition] = useTransition();
   const [isLoading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof NewPodcastSchema>>({
     resolver: zodResolver(NewPodcastSchema),
@@ -54,28 +52,6 @@ export default function NewPodcastForm() {
       category: [],
     },
   });
-
-  const convertFileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        if (reader.result instanceof ArrayBuffer) {
-          reject(new Error("Failed to convert file to base64"));
-          return;
-        }
-
-        const base64String = reader.result as string;
-        resolve(base64String.split(",")[1]);
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(file);
-    });
-  };
 
   const onSubmit = async (values: z.infer<typeof NewPodcastSchema>) => {
     try {

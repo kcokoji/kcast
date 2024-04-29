@@ -16,7 +16,7 @@ interface Props {
 
 export default function PodcastNav({ user }: Props) {
   return (
-    <header className="border bg-white w-full">
+    <header className="border border-b bg-white w-full">
       <nav>
         <Container className="flex justify-between items-center py-0">
           <Link href="/" className="flex items-center select-none gap-1">

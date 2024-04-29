@@ -1,14 +1,13 @@
 "use client";
 
 import {
-  UserIcon,
   Package2Icon,
   LogOutIcon,
   MenuSquareIcon,
   LayoutDashboard,
   Settings,
 } from "lucide-react";
-
+import { UserIcon } from "@heroicons/react/16/solid";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +33,7 @@ export const UserButton = ({ user }: Props) => {
         <Avatar>
           <AvatarImage src={user?.user_metadata.avatar_url || ""} />
           <AvatarFallback className="bg-primary">
-            <UserIcon className="text-white" />
+            <UserIcon className="text-white p-2" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

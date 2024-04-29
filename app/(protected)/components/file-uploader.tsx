@@ -128,7 +128,7 @@ export function FileUploader(props: FileUploaderProps) {
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file }) => {
-          toast.error(`File ${file.name} was rejected`);
+          toast.error(`File ${file.name} exceeded size limit`);
         });
       }
 

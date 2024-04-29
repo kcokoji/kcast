@@ -9,9 +9,9 @@ interface HeaderProps {
 
 export default function Header({ title, description }: HeaderProps) {
   return (
-    <div>
+    <div className="space-y-3">
       <h1
-        className=" text-2xl font-bold md:text-4xl tracking-tight"
+        className=" text-3xl font-bold md:text-5xl tracking-tight"
         // initial={{ y: "100%", opacity: 0 }}
         // animate={{ y: 0, opacity: 1 }}
         // exit={{ y: "100%", opacity: 0 }}
@@ -24,7 +24,9 @@ export default function Header({ title, description }: HeaderProps) {
         {title}
       </h1>
       {description && (
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-base lg:text-lg text-muted-foreground">
+          {description}
+        </p>
       )}
     </div>
   );

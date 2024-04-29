@@ -1,10 +1,10 @@
 "use server";
 import * as z from "zod";
 import { NewPodcastSchema } from "@/schemas/podcast";
-import { createClient } from "@/utils/supabase/server";
 import { getUser } from "@/utils/supabase/user";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function createPodcast(values: z.infer<typeof NewPodcastSchema>) {
   const user = await getUser();
@@ -49,6 +49,6 @@ export async function createPodcast(values: z.infer<typeof NewPodcastSchema>) {
       role: "Admin",
     },
   });
-
+  revalidatePath("/podcasts", "layout");
   redirect(`/podcasts/${podcast.id}`);
 }
