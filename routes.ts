@@ -35,7 +35,7 @@ export const apiAuthPrefix = "/api";
  * The prefix for Admin routes
  * Routes that start with this prefix are used only by admins
  */
-export const adminPrefix = "/admin";
+export const podcastPrefix = "/podcasts";
 
 /**
  * The default redirect path after logging in

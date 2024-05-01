@@ -2,7 +2,7 @@
 import * as z from "zod";
 import { NewPodcastSchema } from "@/schemas/podcast";
 import { getUser } from "@/utils/supabase/user";
-import { db } from "@/lib/db";
+import prisma from "@/lib/edge-db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -40,9 +40,9 @@ export async function createPodcast(values: z.infer<typeof NewPodcastSchema>) {
     website,
   };
 
-  const podcast = await db.podcast.create({ data: podcastData });
+  const podcast = await prisma.podcast.create({ data: podcastData });
 
-  await db.podcastMembership.create({
+  await prisma.podcastMembership.create({
     data: {
       userId: user.id,
       podcastId: podcast.id,
@@ -50,5 +50,5 @@ export async function createPodcast(values: z.infer<typeof NewPodcastSchema>) {
     },
   });
   revalidatePath("/podcasts", "layout");
-  redirect(`/podcasts/${podcast.id}`);
+  return { success: podcast.id };
 }

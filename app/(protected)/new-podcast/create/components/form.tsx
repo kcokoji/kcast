@@ -36,9 +36,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import MultiSelectFormField from "@/app/(protected)/components/multi-select";
 import { createPodcast } from "@/actions/podcast";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function NewPodcastForm() {
   const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof NewPodcastSchema>>({
     resolver: zodResolver(NewPodcastSchema),
     defaultValues: {
@@ -99,8 +102,10 @@ export default function NewPodcastForm() {
       // Check if there's an error
       if (podcastResponse?.error) {
         toast.error(podcastResponse.error);
-      } else {
-        toast.success("Podcast created!");
+      }
+      if (podcastResponse?.success) {
+        router.push(`/podcasts/${podcastResponse.success}`);
+        toast.success("Podcast Created");
       }
     } catch (err) {
       console.error(err);

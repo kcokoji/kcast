@@ -1,7 +1,7 @@
 import { FilePlus, LibraryBig } from "lucide-react";
 import Image from "next/image";
 import { User } from "@supabase/supabase-js";
-import { db } from "@/lib/db";
+import prisma from "@/lib/edge-db";
 import CreateButton from "../../components/create-button";
 
 import {
@@ -23,14 +23,24 @@ interface Props {
   user: User;
 }
 export async function Podcasts({ user }: Props) {
-  unstable_noStore();
-  const membership = await db.podcastMembership.findMany({
+  const membership = await prisma.podcastMembership.findMany({
     where: {
       userId: user.id,
     },
     select: {
-      podcast: true,
+      podcast: {
+        select: {
+          id: true,
+          title: true,
+          imageUrl: true,
+        },
+      },
       role: true,
+    },
+    orderBy: {
+      podcast: {
+        updatedAt: "desc",
+      },
     },
   });
 
@@ -51,7 +61,8 @@ export async function Podcasts({ user }: Props) {
                       alt="Course Image"
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover"
+                      className="object-cover w-auto h-auto"
+                      priority
                     />
                   </AspectRatio>
                 </div>
@@ -104,13 +115,25 @@ export function PodcastSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-[5px] place-items-center">
       <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
+        <Skeleton className="h-[300px] w-[300px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
       </div>
       <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
+        <Skeleton className="h-[300px] w-[300px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
       </div>
       <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[400px] w-[400px] lg:w-[370px] rounded-xl" />
+        <Skeleton className="h-[300px] w-[300px] rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
       </div>
     </div>
   );

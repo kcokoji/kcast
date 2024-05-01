@@ -14,7 +14,7 @@ export default async function PodcastsPage() {
   }
   return (
     <Container className="space-y-10">
-      <Header title="Podcasts" description="Manage podcasts here" />
+      <Header title="My Podcasts" description="Manage podcasts here" />
       <div className="flex justify-end">
         <CreateButton />{" "}
       </div>

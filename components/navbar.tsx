@@ -57,7 +57,7 @@ export default function Navbar() {
               <Button size="icon" variant="link" className="lg:hidden">
                 <span className="sr-only">Toggle menu</span>
 
-                <Bars2Icon className="text-border h-6 w-6" />
+                <Bars2Icon className=" h-6 w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent

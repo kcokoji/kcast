@@ -182,7 +182,7 @@ export const logout = async () => {
     await supabase.auth.signOut();
   }
 
-  redirect("login");
+  redirect("/login");
 };
 
 export const google = async () => {

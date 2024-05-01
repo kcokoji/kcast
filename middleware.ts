@@ -6,8 +6,9 @@ import {
   publicRoutes,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
+  podcastPrefix,
 } from "./routes";
-
+import prisma from "./lib/edge-db";
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
 
@@ -15,6 +16,8 @@ export async function middleware(request: NextRequest) {
   const { data } = await supabase.auth.getUser();
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+
+  const isPodcastRoute = nextUrl.pathname.startsWith(podcastPrefix);
 
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -27,7 +30,7 @@ export async function middleware(request: NextRequest) {
     if (data.user) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return null;
+    return await updateSession(request);
   }
 
   if (!data.user && !isPublicRoute) {
@@ -41,6 +44,25 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(
       new URL(`/login?callbackUrl=${encodedCallbackUrl}`, nextUrl),
     );
+  }
+  const podcastId = request.nextUrl.pathname.split("/")[2];
+  if (isPodcastRoute && data.user && podcastId) {
+    // Assuming podcast ID is at index 2
+
+    const membership = await prisma.podcastMembership.findFirst({
+      where: {
+        podcastId: podcastId,
+        userId: data.user.id,
+      },
+      cacheStrategy: {
+        ttl: 60,
+      },
+    });
+
+    if (!membership) {
+      // User does not have membership, redirect to 404
+      return NextResponse.redirect(new URL("/404", request.url));
+    }
   }
 
   return await updateSession(request);

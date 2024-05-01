@@ -15,7 +15,7 @@ export default async function PodcastsLayout({
   const user = await getUser();
 
   return (
-    <section className="bg-[#f2f2f5]">
+    <section className="bg-[#f2f2f5] min-h-screen">
       <PodcastNav user={user} />
       {children}
       <Footer />

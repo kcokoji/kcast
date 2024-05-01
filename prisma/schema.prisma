@@ -1,6 +1,6 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider = "prisma-client-js"
+  // binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -37,12 +37,19 @@ model PodcastMembership {
   updatedAt DateTime @updatedAt
 
   @@id([podcastId, userId])
+  @@unique([podcastId, userId])
 }
 
 enum EpisodeStatus {
   Draft
   Scheduled
   Published
+}
+
+enum EpisodeType {
+  Full
+  Trailer
+  Bonus
 }
 
 enum Role {
@@ -53,13 +60,15 @@ enum Role {
 
 model Episode {
   id          Int           @id @default(autoincrement())
-  episodeNo   String
+  episodeNo   Int
   title       String
   description String
   audioUrl    String
   seasonNo    Int
   status      EpisodeStatus @default(Draft)
+  episodeType EpisodeType   @default(Full)
   pubDate     DateTime?
+  explicit    Boolean       @default(false)
   Enclosure   Enclosure?    @relation("EpisodeEnclosures")
   podcastId   String
   podcast     Podcast       @relation("PodcastEpisodes", fields: [podcastId], references: [id], onDelete: Cascade)

@@ -2,6 +2,9 @@
 CREATE TYPE "EpisodeStatus" AS ENUM ('Draft', 'Scheduled', 'Published');
 
 -- CreateEnum
+CREATE TYPE "EpisodeType" AS ENUM ('Full', 'Trailer', 'Bonus');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('Admin', 'Editor', 'Viewer');
 
 -- CreateTable
@@ -37,13 +40,15 @@ CREATE TABLE "PodcastMembership" (
 -- CreateTable
 CREATE TABLE "Episode" (
     "id" SERIAL NOT NULL,
-    "episodeNo" TEXT NOT NULL,
+    "episodeNo" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "audioUrl" TEXT NOT NULL,
     "seasonNo" INTEGER NOT NULL,
     "status" "EpisodeStatus" NOT NULL DEFAULT 'Draft',
+    "episodeType" "EpisodeType" NOT NULL DEFAULT 'Full',
     "pubDate" TIMESTAMP(3),
+    "explicit" BOOLEAN NOT NULL DEFAULT false,
     "podcastId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -76,6 +81,9 @@ CREATE TABLE "Invitation" (
 
     CONSTRAINT "Invitation_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PodcastMembership_podcastId_userId_key" ON "PodcastMembership"("podcastId", "userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Enclosure_episodeId_key" ON "Enclosure"("episodeId");

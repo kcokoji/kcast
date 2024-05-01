@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Package2Icon,
-  LogOutIcon,
-  MenuSquareIcon,
-  LayoutDashboard,
-  Settings,
-} from "lucide-react";
 import { UserIcon } from "@heroicons/react/16/solid";
 import {
   DropdownMenu,
@@ -21,6 +14,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogoutButton } from "@/app/(auth)/components/logout-button";
 import Link from "next/link";
 import { User } from "@supabase/supabase-js";
+import { CogIcon, MicrophoneIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   user: User | null;
@@ -33,7 +27,7 @@ export const UserButton = ({ user }: Props) => {
         <Avatar>
           <AvatarImage src={user?.user_metadata.avatar_url || ""} />
           <AvatarFallback className="bg-primary">
-            <UserIcon className="text-white p-2" />
+            <UserIcon className="text-white p-2 w-full h-full" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -43,10 +37,16 @@ export const UserButton = ({ user }: Props) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
+        <Link href="/podcasts">
+          <DropdownMenuItem className=" justify-between text-base font-medium">
+            My Podcasts
+            <MicrophoneIcon className="h-4 w-4" />
+          </DropdownMenuItem>
+        </Link>
         <Link href="/account">
           <DropdownMenuItem className=" justify-between text-base font-medium">
             Account Settings
-            <Settings className="h-4 w-4" />
+            <CogIcon className="h-4 w-4" />
           </DropdownMenuItem>
         </Link>
         <LogoutButton>
