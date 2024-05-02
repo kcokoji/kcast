@@ -31,6 +31,10 @@ export default async function PodcastPage({
     where: {
       id: params.podcastId,
     },
+    cacheStrategy: {
+      ttl: 120,
+      swr: 60,
+    },
   });
 
   if (!podcast) {

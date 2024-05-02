@@ -42,6 +42,10 @@ export async function Podcasts({ user }: Props) {
         updatedAt: "desc",
       },
     },
+    cacheStrategy: {
+      ttl: 120,
+      swr: 60,
+    },
   });
 
   return (

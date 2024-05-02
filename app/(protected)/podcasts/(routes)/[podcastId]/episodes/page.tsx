@@ -24,7 +24,7 @@ export default async function EpisodesPage({
         {" "}
         <Button asChild>
           <Link
-            href={`podcasts/${params.podcastId}/episodes/new`}
+            href={`/podcasts/${params.podcastId}/episodes/new`}
             className="font-medium"
           >
             <PlusCircleIcon className="w-6 h-6" />
